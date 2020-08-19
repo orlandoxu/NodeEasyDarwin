@@ -1,4 +1,4 @@
-const cfg = require('cfg');
+const cfg = require('./cfg');
 const express = require('express');
 const path = require('path');
 const fs = require('fs-extra');
@@ -8,7 +8,6 @@ const ip = require('@penggy/internal-ip');
 const events = require('events');
 
 class HTTPServer extends events.EventEmitter {
-
     constructor(port = 10008) {
         super();
         this.port = port;

@@ -4,7 +4,6 @@ const RTSPSession = require('rtsp-session');
 const events = require('events');
 
 class RTSPServer extends events.EventEmitter {
-    
     constructor(port = 554) {
         super();
         this.port = port;
