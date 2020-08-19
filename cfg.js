@@ -8,4 +8,5 @@ module.exports = {
     rootDir: __dirname,
     wwwDir: path.resolve(__dirname, "www"),
     dataDir: path.resolve(os.homedir(), ".easydarwin")
+    // dataDir: path.resolve(os.homedir(), ".easydarwin")
 }

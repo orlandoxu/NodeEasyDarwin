@@ -1,7 +1,5 @@
-const RTSPServer = require('rtsp-server');
 const cfg = require('cfg');
 const express = require('express');
-const yields = require('@penggy/express-yields');
 const path = require('path');
 const fs = require('fs-extra');
 const http = require('http');
@@ -21,7 +19,7 @@ class HTTPServer extends events.EventEmitter {
         this.app.use(bodyParser.json({ type: 'application/json', limit: '100mb' }));
         this.app.use(bodyParser.raw({ type: 'text/plain' }));
         this.app.use(bodyParser.text({ type: 'text/html' }));
-    
+
         this.app.use(express.static(cfg.wwwDir));
         var cookieParser = require('cookie-parser');
         this.app.use(cookieParser());
@@ -43,7 +41,7 @@ class HTTPServer extends events.EventEmitter {
             },
             cookie: {
                 httpOnly: true, //not allow js access cookie
-                maxAge: 28800000 // 8h 
+                maxAge: 28800000 // 8h
             },
             unset: 'destroy'
         }));
@@ -75,13 +73,13 @@ class HTTPServer extends events.EventEmitter {
                 return;
             }
             res.status(500).send(e.message);
-        }); 
-    
+        });
+
         this.server = http.createServer(this.app);
         this.server.on("upgrade", (req, socket, head) => {
             const pathname = require('url').parse(req.url).pathname;
             socket.destroy();
-        });   
+        });
     }
 
     async start() {
