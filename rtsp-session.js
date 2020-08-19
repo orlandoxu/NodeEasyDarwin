@@ -16,7 +16,6 @@ class RTSPRequest {
 }
 
 class RTSPSession extends event.EventEmitter {
-
     constructor(socket, server) {
         super();
         this.type = '';
@@ -34,6 +33,7 @@ class RTSPSession extends event.EventEmitter {
         this.outBytes = 0;
         this.startAt = new Date();
         this.socket.on("data", data => {
+            console.log('kkkk')
             this.bp.push(data);
         }).on("close", () => {
             this.stop();
@@ -67,6 +67,7 @@ class RTSPSession extends event.EventEmitter {
                 buf.copy(rtpBuf, 1, 0);
                 rtpBody.copy(rtpBuf, 4, 0);
 
+                // orlando：看代码只支持H264呢
                 if (channel == this.vrtpchannel && this.vcodec.toUpperCase() == 'H264') {
                     var rtp = rtpParser.parseRtpPacket(rtpBody);
                     if (rtpParser.isKeyframeStart(rtp.payload)) {
@@ -128,8 +129,8 @@ class RTSPSession extends event.EventEmitter {
     }
 
     /**
-     * 
-     * @param {Object} opt 
+     *
+     * @param {Object} opt
      * @param {Number} [opt.code=200]
      * @param {String} [opt.msg='OK']
      * @param {Object} [opt.headers={}]
@@ -172,8 +173,8 @@ class RTSPSession extends event.EventEmitter {
     }
 
     /**
-     * 
-     * @param {RTSPRequest} req 
+     *
+     * @param {RTSPRequest} req
      */
     handleRequest(req) {
         // console.log(`<<<<<<<<<<< request[${req.method}] <<<<<<<<<<<<<`);

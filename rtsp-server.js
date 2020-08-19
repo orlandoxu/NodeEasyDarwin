@@ -3,6 +3,9 @@ const ip = require('@penggy/internal-ip');
 const RTSPSession = require('rtsp-session');
 const events = require('events');
 
+// 作者的文章
+// https://blog.csdn.net/xiejiashu/article/details/86699995
+
 class RTSPServer extends events.EventEmitter {
     constructor(port = 554) {
         super();

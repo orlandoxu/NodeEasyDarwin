@@ -1,7 +1,7 @@
 class EasyRtpParser {
 
     constructor() {
-        
+
     }
 
     static parseRtpPacket(buf) {
@@ -20,7 +20,7 @@ class EasyRtpParser {
         var sequenceNumber = buf.readUInt16BE(2);
         var timestamp = buf.readUInt32BE(4);
         var ssrc = buf.readUInt32BE(8);
-    
+
         var offset = EasyRtpParser.FIXED_HEADER_LENGTH;
         var end = buf.length;
         if(end - offset >= 4 * csrcCount) {
@@ -68,7 +68,7 @@ class EasyRtpParser {
         if (payloadType < 0 || payloadType > 127) {
             throw new Error('payload type range error');
         }
-    
+
         return EasyRtpParser.payloadTypesHash[payloadType];
     }
 
