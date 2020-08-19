@@ -38,7 +38,9 @@ class RTSPServer extends events.EventEmitter {
     addSession(session) {
         if(session.type == 'pusher') {
             this.pushSessions[session.path] = session;
+            console.log('new pusher, path ', session.path)
         } else if(session.type == 'player') {
+            console.log('new player, path ', session.path)
             var playSessions = this.playSessions[session.path];
             if(!playSessions) {
                 playSessions = [];

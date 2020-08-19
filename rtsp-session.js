@@ -6,6 +6,10 @@ const path = require('path');
 const rtpParser = require('rtp-parser');
 const BufferPool = require('buffer-pool');
 const sdpParser = require('sdp-transform');
+const fs = require('fs')
+
+const writeStream = fs.createWriteStream('test.mp4')
+let i = 0
 
 class RTSPRequest {
     constructor() {
@@ -33,7 +37,6 @@ class RTSPSession extends event.EventEmitter {
         this.outBytes = 0;
         this.startAt = new Date();
         this.socket.on("data", data => {
-            console.log('kkkk')
             this.bp.push(data);
         }).on("close", () => {
             this.stop();
@@ -70,6 +73,14 @@ class RTSPSession extends event.EventEmitter {
                 // orlando：看代码只支持H264呢
                 if (channel == this.vrtpchannel && this.vcodec.toUpperCase() == 'H264') {
                     var rtp = rtpParser.parseRtpPacket(rtpBody);
+
+                    console.log('rtp', typeof rtp.payload, rtp.payload)
+                    if (i++ === 500) {
+                        writeStream.close()
+                    } else if (i < 500) {
+                        writeStream.write(Uint8Array.from(rtp.payload).buffer)
+                    }
+
                     if (rtpParser.isKeyframeStart(rtp.payload)) {
                         // console.log(`find key frame, current gop cache size[${this.gopCache.length}]`);
                         this.gopCache = [];
@@ -260,6 +271,7 @@ class RTSPSession extends event.EventEmitter {
         for (var playSession of playSessions) {
             playSession.outBytes += rtpBuf.length;
             this.outBytes += rtpBuf.length;
+            console.log('broadcast: ', rtpBuf.length)
             playSession.socket.write(rtpBuf);
         }
     }
